@@ -12,7 +12,7 @@ Current fixes and checks: [codextodo.md](codextodo.md). The original results pre
 ## Done
 
 - [x] **2026-10-09** Reviewed the friend's proposal against the rubric → topic accepted
-- [x] **2026-10-09** Created GitHub repo `G9YzNDN/DLMED` (public) and the project code
+- [x] **2026-10-09** Created GitHub repo `NDN-P/DLMED` (public; username was G9YzNDN until 2026-10) and the project code
   (data prep, shared-encoder model, training `--tasks cls/seg/both`, fixed/uncertainty loss weighting, evaluation, Colab notebook)
 - [x] **2026-10-09** Smoke-tested the pipeline on fake data; set up the local GPU environment (RTX 5070 Laptop, PyTorch 2.11 + CUDA 12.8)
 - [x] **2026-10-09** Downloaded the Figshare dataset (checksums verified) → `DLMED/data/` (git-ignored); 3,064 images, masks checked visually
