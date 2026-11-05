@@ -26,6 +26,9 @@ Current fixes and checks: [codextodo.md](codextodo.md). The original results pre
 - [x] **2026-10-10** Reviewed raw data, splits, saved predictions and all 12 checkpoints; full test inference matches the original reported outputs
 - [x] **2026-10-10** Corrected grouping/hospital/statistical/clinical claims and separated original results from the new training protocol; implementation checks are recorded in `codextodo.md`
 - [x] **2026-10-10** Fixed run-folder protection, augmentation/worker seeding and Windows instructions; three regression tests and a real-data two-epoch GPU/validation check passed. All 104 archived files checked by hash are unchanged.
+- [x] **2026-11-05** Matched the course submission list (architecture, inference, weights, results; training code not required):
+  added `src/predict.py` (one image → tumor type + mask overlay) with a test, committed the C seed-0 weights as fp16
+  (`weights/`, 49 MB; test metrics identical to fp32), README "Inference" + "What to submit", TASKS.md TA-review prep
 
 ## Todo (me)
 

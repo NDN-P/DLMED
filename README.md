@@ -79,8 +79,34 @@ bash scripts/run_experiments.sh --out_dir runs/reproduced/final --lr 3e-4 --work
 & $dlmedPython src/analyze.py --runs_dir runs/reproduced/final --out_dir runs/reproduced/results
 ```
 
-Code, summary tables and figures are on GitHub. Data and trained checkpoints are git-ignored and stay on Guy's
+Code, summary tables and figures are on GitHub. Data and the 12 trained checkpoints are git-ignored and stay on Guy's
 laptop; teammates who want to run evaluation need those files or must download the dataset and train anew.
+The main model's weights **are** in the repo (see Inference below).
+
+## Inference (one image)
+
+```powershell
+& $dlmedPython src/predict.py --image data/raw/mat/858.mat     # or any .png/.jpg MRI slice
+```
+
+Prints the tumor type with class probabilities and saves `<image>_pred.png`: predicted tumor in red, ground
+truth in green (shown and scored with Dice only for Figshare `.mat` input). Example:
+[`results/figures/8_inference_example.png`](results/figures/8_inference_example.png).
+
+The default weights `weights/C_mtl_equal_seed0.pt` (49 MB) are the multi-task C model, seed 0, stored in fp16.
+On the test set they give the same results as the original fp32 checkpoint (accuracy 0.9518, Macro-F1 0.9375,
+Dice 0.7666). Preprocessing matches validation/test: grayscale → resize 256 → /255 → normalize (0.449, 0.226).
+
+## What to submit (course requirement)
+
+| Required | File(s) |
+|---|---|
+| Architecture code | [`src/model.py`](src/model.py) |
+| Inference code | [`src/predict.py`](src/predict.py) (one image), [`src/evaluate.py`](src/evaluate.py) (whole test set) |
+| Model weights | [`weights/C_mtl_equal_seed0.pt`](weights/) |
+| Results | [`results/`](results/): `RESULTS.md`, tables, figures |
+
+Training code is not required, but it stays in the repo so the experiments can be reproduced.
 
 ## Data split (separate patient groups)
 
@@ -145,6 +171,8 @@ src/metrics.py        Dice / IoU / classification metrics
 src/engine.py         inference loop shared by training and evaluation
 src/train.py          training (one experiment)
 src/evaluate.py       test-set evaluation and figures
+src/predict.py        inference on one image (tumor type + mask overlay)
+weights/              main model weights (C, seed 0, fp16)
 src/summarize.py      comparison table across runs and seeds
 src/analyze.py        final tables + slide figures -> results/
 scripts/tune_lr.sh    learning-rate choice on validation

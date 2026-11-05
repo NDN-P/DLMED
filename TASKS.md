@@ -35,6 +35,39 @@
 (คะแนนนำเสนอและตอบคำถามมี 3 คะแนน):
 *โมเดลเดียว มี shared encoder หนึ่งตัว และ 2 heads (mask เนื้องอก + ชนิดเนื้องอก) เทียบกับโมเดลที่เรียนงานเดียว*
 
+## เตรียมตัวตรวจงานกับพี่ฟิว (TA) ~15 นาที
+
+ส่งคลิปวันที่ 12 หรือ 14 แล้วนำเสนอให้พี่ฟิว พี่ฟิวจะถามเพื่อเช็กว่า **ทุกคนทำและเข้าใจจริง** ส่วนคะแนนอื่นอาจารย์ให้เอง
+สิ่งที่จะโดนถาม: ใครทำอะไร · งานคืออะไร input/output คืออะไร ทำไปเพื่ออะไร · เข้าใจหลักการจริงไหม ·
+งานจริงตรงกับสไลด์ไหม · เข้าใจโค้ดที่ส่งไหม · มีการ review code และตรวจความถูกต้องไหม
+
+**ภาพรวมที่ทุกคนต้องตอบได้ (ท่องให้ได้)**
+
+| คำถาม | คำตอบ |
+|---|---|
+| งานคืออะไร | โมเดลเดียวทำ 2 งานพร้อมกัน: หาบริเวณเนื้องอกในภาพ MRI สมอง (segmentation) และบอกชนิดเนื้องอก 3 ชนิด (classification) |
+| Input | ภาพ MRI สมอง 1 ภาพ (grayscale) ย่อเป็น 256×256 แล้ว normalize |
+| Output | (1) mask เนื้องอก 256×256 (sigmoid > 0.5 = เนื้องอก) (2) ความน่าจะเป็น 3 คลาส meningioma / glioma / pituitary (softmax) |
+| ทำไปเพื่ออะไร | ตอบคำถามว่า "เรียน 2 งานร่วมกันช่วยไหม" → classification ดีขึ้น (Macro-F1 0.916 → 0.938) Dice ใกล้เคียงเดิม (0.774 vs 0.775) |
+| โมเดล | shared ResNet-34 encoder (pretrained ImageNet) → U-Net decoder (mask) + classification head (ชนิด) |
+| การทดลอง | A = classification อย่างเดียว, B = segmentation อย่างเดียว, C = multi-task น้ำหนัก loss เท่ากัน, D = multi-task แบบ uncertainty weighting × 3 seeds |
+| ข้อมูล | Figshare 3,064 ภาพ แบ่ง train/val/test **ตามกลุ่มผู้ป่วย** (151/29/29 กลุ่ม) กัน data leakage |
+| Review / ตรวจความถูกต้อง | ทดสอบโค้ด (`tests/`), ตรวจ split ว่าไม่มีผู้ป่วยข้ามชุด, รัน inference ซ้ำได้ผลตรงกับที่รายงาน, เลือก lr จาก validation เท่านั้น |
+
+**โค้ดที่แต่ละหัวข้อต้องเปิดแล้วอธิบายได้ทีละบรรทัด**
+
+| หัวข้อ | ไฟล์ / ฟังก์ชัน |
+|---|---|
+| 1) ปัญหาและข้อมูล | `src/prepare_data.py` (`read_mat`, `patient_group`, `split_by_patient`), `src/dataset.py` (normalize + augmentation) |
+| 2) Classification | `src/model.py` (`aux_params` = classification head), `cls_loss` ใน `src/losses.py`, `classification_metrics` ใน `src/metrics.py` |
+| 3) Segmentation | `src/model.py` (U-Net decoder), `seg_loss` / `dice_loss`, `dice_iou_per_image` |
+| 4) Multi-task | `src/train.py` (training loop, `--tasks`), `MultiTaskLoss` |
+| 5) ประเมินผล | `src/evaluate.py`, `src/predict.py`, `src/analyze.py` |
+| 6) ภาพรวม | `README.md` ทั้งไฟล์ และสาธิต `src/predict.py` สด ๆ (ดูหัวข้อ Inference ใน README) |
+
+**ไฟล์ที่ต้องส่ง** (ดูตาราง "What to submit" ใน README): Architecture `src/model.py` · Inference `src/predict.py` ·
+Weights `weights/C_mtl_equal_seed0.pt` · Results `results/` · Training code ไม่ต้องส่ง
+
 ## ใครเลือกหัวข้อไหน
 
 | หัวข้อ | ชื่อ |

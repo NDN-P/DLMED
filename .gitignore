@@ -5,6 +5,7 @@ runs/
 *.zip
 *.pt
 *.pth
+!weights/*.pt
 
 # Python
 __pycache__/
