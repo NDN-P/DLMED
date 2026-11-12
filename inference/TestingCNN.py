@@ -43,16 +43,20 @@ if not os.path.exists(model_path) and os.path.exists('../weights/C_mtl_equal_see
     model_path = '../weights/C_mtl_equal_seed0.pt'   # inside the DLMED repo: the committed weights (same model)
 
 # %% [markdown]
-# - Google Colab only: get the trained weights from the DLMED repo and upload the image to test.
+# - No weights file yet (for example the zip package): download the trained weights from the DLMED repo (49 MB).
+# - Google Colab only: upload the image to test.
 
 # %%
-if 'google.colab' in sys.modules:
+if not os.path.exists(model_path):
     import urllib.request
+
+    print('Downloading the trained weights from the DLMED repo ...')
+    urllib.request.urlretrieve(
+        'https://github.com/NDN-P/DLMED/raw/main/weights/C_mtl_equal_seed0.pt', model_path)
+
+if 'google.colab' in sys.modules:
     from google.colab import files
 
-    if not os.path.exists(model_path):
-        urllib.request.urlretrieve(
-            'https://github.com/NDN-P/DLMED/raw/main/weights/C_mtl_equal_seed0.pt', model_path)
     img_path = next(iter(files.upload()))      # choose an MRI slice (.mat / .png / .jpg)
 
 # %% [markdown]

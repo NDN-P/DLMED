@@ -13,7 +13,7 @@ the **tumor mask**.
 | `Net.py` | structure of the model (same file as in `../training/`) |
 | `TestingCNN.py` | 1. load the network, 2. test with one image, 3. (optional) test with the whole test set |
 | `inference.ipynb` | the same code as a Colab notebook (`Net` is included in a cell) |
-| `model.pt` | trained weights (`state_dict`). Not committed: when it is missing, `../weights/C_mtl_equal_seed0.pt` (multi-task model C, seed 0, fp16, 49 MB) is used |
+| `model.pt` | trained weights (`state_dict`). Not committed: when it is missing, `../weights/C_mtl_equal_seed0.pt` (multi-task model C, seed 0, fp16, 49 MB) is used, or downloaded from the DLMED repo on the first run |
 | `requirements.txt` | packages |
 
 ## How to use
