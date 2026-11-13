@@ -81,7 +81,7 @@ Weights `weights/C_mtl_equal_seed0.pt` · Results `results/` · Training code �
 
 ---
 
-## 1) ปัญหาและข้อมูล
+## 1) ปัญหาและข้อมูล "Bua"
 
 **ศึกษา**
 - [ ] RESULTS.md หัวข้อ 1 "Problem" และ 2 "Data"
@@ -154,7 +154,7 @@ Weights `weights/C_mtl_equal_seed0.pt` · Results `results/` · Training code �
 
 **เตรียมตอบ:** ความต่างระหว่างโมเดลเป็นของจริงหรือแค่ noise? ทำไมโมเดลสับสน meningioma กับ pituitary?
 
-## 6) ภาพรวม ข้อจำกัด และบทสรุป
+## 6) ภาพรวม ข้อจำกัด และบทสรุป "Nut"
 
 **ศึกษา**
 - [ ] RESULTS.md ทั้งหมด โดยเฉพาะหัวข้อ 9 "Limitations" และ 10 "Conclusion"
